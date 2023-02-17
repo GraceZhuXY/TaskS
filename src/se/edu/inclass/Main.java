@@ -1,11 +1,14 @@
 package se.edu.inclass;
 
+import org.jcp.xml.dsig.internal.SignerOutputStream;
 import se.edu.inclass.data.DataManager;
 import se.edu.inclass.task.Deadline;
 import se.edu.inclass.task.Task;
 import se.edu.inclass.task.TaskNameComparator;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -17,12 +20,16 @@ public class Main {
         ArrayList<Task> tasksData = dm.loadData();
 
         System.out.println();
-//        System.out.println("Printing deadlines");
-//        printDeadlines(tasksData);
-//
-//        System.out.println("Total number of deadlines: " + countDeadlines(tasksData));
-//        printData(tasksData);
-//        printDataUsingStreams(tasksData);
+        System.out.println("Printing deadlines");
+        printDeadlines(tasksData);
+
+        System.out.println("Total number of deadlines: " + countDeadlines(tasksData));
+
+        System.out.println();
+
+        System.out.println("Total number of deadlines: " + countDeadlines(tasksData));
+        System.out.println("Printing deadlines after sorting:");
+
         printDeadlinesUsingStream(tasksData);
         System.out.println(countDeadlinesUsingStream(tasksData));
     }
@@ -66,6 +73,14 @@ public class Main {
         }
     }
 
+
+
+    public static ArrayList<Task> filterTaskListUsingStreams(ArrayList<Task> tasks, String filterString) {
+        ArrayList<Task> filteredlist = (ArrayList<Task>) tasks.stream()
+                .filter(t -> t.getDescription().contains(filterString))
+                .collect(Collectors.toList());
+        return filteredlist;
+    }
 
 
     public static void printDeadlinesUsingStream(ArrayList<Task> tasks) {
